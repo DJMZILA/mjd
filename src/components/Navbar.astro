@@ -1,0 +1,150 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<nav>
+  <div class="logo">
+    <Icon name="devicon:archlinux-wordmark" />
+  </div>
+  <ul class="nav-links">
+    <li><a href="">About Me</a></li>
+    <li><a href="">Projects</a></li>
+    <li><a href="">Contact</a></li>
+  </ul>
+  <button class="theme-switch">
+    <Icon name="mdi:shield-moon" />
+    <Icon name="mdi:shield-sun" />
+  </button>
+</nav>
+
+<script defer>
+  const themeElem = document.querySelector('.theme-switch');
+  const moonIconElem = document
+    .querySelector('[data-icon="mdi:shield-moon"]');
+  const sunIconElem = document
+    .querySelector('[data-icon="mdi:shield-sun"]');
+
+
+  const getTheme = () => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme /* !== undefined */) {
+      return storedTheme;
+    } else { // else wirkt nur, bei erstaufruf der seite
+      const userPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      console.log(userPrefersDark);
+      return userPrefersDark ? "dark" : "light";
+    }
+  };
+  const setTheme = (theme) => {
+    // set theme class on html-tag
+    document.documentElement.classList.remove("light", "dark");
+    document.documentElement.classList.add(theme);
+    // set hidden-icon class on theme icons
+    if (theme === "dark") {
+      sunIconElem.classList.remove("icon-hidden");
+      moonIconElem.classList.add("icon-hidden");
+    } else {
+      moonIconElem.classList.remove("icon-hidden");
+      sunIconElem.classList.add("icon-hidden");
+    }
+    // set theme in localstorage
+    localStorage.setItem("theme", theme);
+  };
+  /**
+   * C#:
+   * if (x == y) -- Equalit-Operator - Checkt ob die Werte gleich sind.
+   * if (x is y) -- Identity-Operator - Checkt ob die Referenz gleich ist
+   */
+  /**
+   * if (currentTheme === "light") {
+   *  return "dark";
+   * } else {
+   *  return "light";
+   * }
+   */
+  themeElem.addEventListener("click", () => {
+    const currentTheme = getTheme();
+    // === Strict-Equality Operator
+    const newTheme = currentTheme === "light" ? "dark" : "light"; // Ternary-Statement - kurzform eines "If-Statements"
+    setTheme(newTheme);
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const currentTheme = getTheme();
+    setTheme(currentTheme);
+  });
+</script>
+
+<style>
+  [data-icon="mdi:shield-moon"] {
+    color: black;
+  }
+  [data-icon="mdi:shield-sun"] {
+    color: white;
+  }
+  .icon-hidden {
+    display: none;
+  }
+  .theme-switch {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  [data-icon] {
+    width: 40px;
+    height: auto;
+  }
+  [data-icon="devicon:archlinux-wordmark"] {
+    width: 120px;
+    height: auto;
+    margin: -1rem 0;
+  }
+  nav {
+    display: flex;
+    flex-direction: row;
+    color: #cfcfcf;
+    justify-content: space-between;
+    align-items: center;
+    max-height: 10vh;
+  }
+  nav ul {
+    list-style-type: none;
+    padding-left: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    font-size: 1.2em;
+  }
+  nav ul li a {
+    color: #cfcfcf;
+    text-decoration: none;
+    transition: all .5s ease;
+    font-family: MonaspaceXenonVar;
+    font-variation-settings:
+      "wght" 100,
+      "wdth" 100,
+      "slnt" 0;
+  }
+  nav ul li a:hover {
+    text-shadow: 0px 0px 15px #da6bff;
+    color: #da6bff;
+    font-variation-settings:
+      "wght" 500,
+      "wdth" 105,
+      "slnt" -11;
+  }
+
+  nav button.theme-switch {
+    padding: 0;
+    background: none;
+    border: none;
+    height: fit-content;
+    width: fit-content;
+  }
+
+  /* Light-Mode */
+  html.light nav ul li a {
+    color: rgb(45, 32, 35);
+  }
+</style>

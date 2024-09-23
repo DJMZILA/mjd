@@ -1,0 +1,43 @@
+---
+interface Props {
+    progressValue: Number,
+    language: String,
+    color: String
+}
+
+// Object-Destructoring
+const { progressValue, language, color } = Astro.props;
+---
+
+<div class="skill-flex">
+    <h3>{language}</h3>
+    <div class="ghost-progress">
+        <div class="progress-bar" style={`width: ${progressValue}%`} >
+            <span class="progress-percent">{progressValue}%</span>
+        </div>
+    </div>
+</div>
+
+<style define:vars={{ color }}>
+    .skill-flex {
+        display: flex;
+        flex-direction: column;
+        margin: 1rem;
+    }
+    .skill-flex .ghost-progress {
+        background-color: rgba(140, 140, 140, 0.2);
+        border-radius: 1rem;
+        box-shadow: 2px 2px 4px rgba(140, 140, 140, 0.2);
+    }
+    .skill-flex .progress-bar {
+        background-color: var(--color, #4b007d);
+        border-radius: 1rem;
+        box-shadow: 5px 0 5px var(--color, #4b007d);
+    }
+    .skill-flex span.progress-percent {
+        margin: 1rem;
+        font-size: 1.2em;
+        text-shadow: 0 0 4px black;
+        color: white;
+    }
+</style>
